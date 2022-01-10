@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Dashboard from "./pages/Dashboard";
 import React, { useState, useEffect } from "react";
+import { AuthProvider } from "./database/Auth";
+import RequireAuth from "./components/routes/RequireAuth";
 const useStyles = makeStyles((theme) => ({
   login: {
     marginTop: "75px",
@@ -26,6 +28,9 @@ function App() {
   return (
     <Container fluid className="App">
       <BrowserRouter>
+      <AuthProvider>
+
+   
         <Routes>
           <Route
             path="/signin"
@@ -56,27 +61,28 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <Grid
+              <RequireAuth>
+                 <Grid
                 container
                 justifyContent="center"
                 alignContent="center"
                 // className={classes.passwordRecovery}
               >
-                <RequireAuth redirectTo="/signin">
+                
                   <Dashboard />
-                </RequireAuth>
+              
               </Grid>
+              </RequireAuth>
+             
             }
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
+           </AuthProvider>
       </BrowserRouter>
     </Container>
   );
-  function RequireAuth({ children, redirectTo }) {
-    console.log(auth);
-    return auth.currentUser !== null ? children : <Navigate to={redirectTo} />;
-  }
+  
 }
 
 export default App;

@@ -7,13 +7,13 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBVDTBGdQ49SxDLTdWO8FxfqjbENfKzm5U",
-  authDomain: "geointeligencia-38834.firebaseapp.com",
-  projectId: "geointeligencia-38834",
-  storageBucket: "geointeligencia-38834.appspot.com",
-  messagingSenderId: "405591196998",
-  appId: "1:405591196998:web:3d8f7912931a2e41f41147",
-  measurementId: "G-BKY277RN6R",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

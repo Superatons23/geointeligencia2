@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Paper,
@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
+import { AuthContext } from "../../database/Auth";
 const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: "none",
@@ -107,6 +108,11 @@ const Login = () => {
         setAlertOpen(true);
       });
   };
+//redireccionar si ya esta iniciada sesion
+const {currentUser}=useContext(AuthContext)
+if(currentUser!==null){
+  return <Navigate to="/dashboard"  replace />
+}
 
   return (
     <Grid item className={classes.gridMain}>
