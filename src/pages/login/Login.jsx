@@ -7,11 +7,11 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate,Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import { AuthContext } from "../../database/Auth";
@@ -54,6 +54,9 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const classes = useStyles();
   let navigate = useNavigate();
+  //obtener la ruta que ingresaron
+  let location = useLocation();
+  let from = location.state?.from?.pathname || "/dashboard";
 
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const paperStyle = {
@@ -99,7 +102,7 @@ const Login = () => {
 
         const user = userCredential.user;
 
-        navigate(`/dashboard`);
+        navigate(`${from}`);
         // ...
       })
       .catch((error) => {
@@ -108,11 +111,11 @@ const Login = () => {
         setAlertOpen(true);
       });
   };
-//redireccionar si ya esta iniciada sesion
-const {currentUser}=useContext(AuthContext)
-if(currentUser!==null){
-  return <Navigate to="/dashboard"  replace />
-}
+  //redireccionar a la ruta donde venia si ya esta iniciada sesion
+  const { currentUser } = useContext(AuthContext);
+  if (currentUser !== null) {
+    return <Navigate to={from} />;
+  }
 
   return (
     <Grid item className={classes.gridMain}>

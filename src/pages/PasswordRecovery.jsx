@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import "../assets/PasswordRecovery.css";
-import { Grid, Paper, Avatar, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Avatar,
+  TextField,
+  Button,
+  Typography,
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 const useStyles = makeStyles((theme) => ({
   btnSignIn: {
     marginTop: "5px 0",
@@ -12,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#005ea6;",
     },
+  },
+  link: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  typography: {
+    marginTop: "10px",
   },
   textFieldUser: {
     marginBottom: "25px ",
@@ -22,17 +41,23 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "40px",
   },
   gridMain: {
-    maxWidth: "500px",
+    maxWidth: "450px",
+  },
+  alertInfo: {
+    marginBottom: "10px",
   },
 }));
 const initialValues = {
   email: "",
-  password: "",
 };
 const PasswordRecovery = () => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [alertOpenWarning, setAlertOpenWarning] = useState(true);
+  const [alertOpenInfo, setAlertOpenInfo] = useState(true);
+
   const classes = useStyles();
+  const auth = getAuth();
 
   const paperStyle = {
     padding: 40,
@@ -41,10 +66,20 @@ const PasswordRecovery = () => {
 
   const handleSubmit = (e) => {
     if (validate()) {
-      // sigIn();
+      sendEmail();
     }
   };
-
+  const sendEmail = () => {
+    sendPasswordResetEmail(auth, values.email)
+      .then(() => {
+        setValues(initialValues);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setValues(initialValues);
+      });
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -54,7 +89,6 @@ const PasswordRecovery = () => {
   };
   const validate = (e) => {
     let temp = {};
-    temp.password = values.password ? "" : "this field is required.";
 
     if (!values.email) {
       temp.email = "this field is required.";
@@ -82,7 +116,27 @@ const PasswordRecovery = () => {
             in two quick steps
           </p>
         </Grid>
-
+        <Collapse in={alertOpenInfo}>
+          <Alert
+            onClose={() => {
+              setAlertOpenInfo(false);
+            }}
+            severity="warning"
+            className={classes.alertInfo}
+          >
+            If the email address exists, we'll email instructions to you
+          </Alert>
+        </Collapse>
+        <Collapse in={alertOpenWarning}>
+          <Alert
+            onClose={() => {
+              setAlertOpenWarning(false);
+            }}
+            severity="warning"
+          >
+            If the email address does not exist, you'll receive nothing
+          </Alert>
+        </Collapse>
         <TextField
           variant="outlined"
           label="Email"
@@ -112,6 +166,17 @@ const PasswordRecovery = () => {
         >
           Reset password
         </Button>
+        <Grid item align="center">
+          <Typography className={classes.typography}>
+            <Link
+              className={classes.link}
+              style={{ color: "#0070ba" }}
+              to="/signin"
+            >
+              Return to sign in
+            </Link>
+          </Typography>
+        </Grid>
       </Paper>
     </Grid>
   );
