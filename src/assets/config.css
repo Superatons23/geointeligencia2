@@ -1,4 +1,3 @@
-html,
 body,
 #root,
 .App {
@@ -7,4 +6,5 @@ body,
 
 html {
   background-color: #f7f8fb;
+  min-height: 100%;
 }

@@ -40,8 +40,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#1bbd7e",
     marginBottom: "40px",
   },
-  gridMain: {
+  gridDesktop: {
     maxWidth: "450px",
+    [theme.breakpoints.down(770)]: {
+      display: "none",
+    },
+  },
+  gridTabletMobil: {
+    margin: "20px 35px 20px 35px",
+    maxWidth: "450px",
+    [theme.breakpoints.up(770)]: {
+      display: "none",
+    },
   },
   alertInfo: {
     marginBottom: "10px",
@@ -102,9 +112,9 @@ const PasswordRecovery = () => {
     return Object.values(temp).every((x) => x === "");
   };
 
-  return (
-    <Grid item className={classes.gridMain}>
-      <Paper elevation={10} style={paperStyle}>
+  const Form = () => {
+    return (
+      <>
         <Grid item align="center">
           {/** <Avatar className={classes.avatarStyle}>
             <h1>icono</h1>
@@ -177,8 +187,21 @@ const PasswordRecovery = () => {
             </Link>
           </Typography>
         </Grid>
-      </Paper>
-    </Grid>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <Grid item className={classes.gridDesktop}>
+        <Paper elevation={10} style={paperStyle}>
+          <Form />
+        </Paper>
+      </Grid>
+      <Grid item className={classes.gridTabletMobil}>
+        <Form />
+      </Grid>
+    </>
   );
 };
 

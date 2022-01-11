@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
   Typography,
+  Box,
 } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,8 +37,18 @@ const useStyles = makeStyles((theme) => ({
   textFieldUser: {
     marginBottom: "25px ",
   },
-  gridMain: {
+  gridDesktop: {
     maxWidth: "350px",
+    [theme.breakpoints.down(770)]: {
+      display: "none",
+    },
+  },
+  gridTabletMobil: {
+    margin: "20px 35px 20px 35px",
+    maxWidth: "350px",
+    [theme.breakpoints.up(770)]: {
+      display: "none",
+    },
   },
   alert: {
     marginBottom: "20px",
@@ -48,17 +59,16 @@ const initialValues = {
   password: "",
 };
 const Login = () => {
-  const [isSignIn, setIsSignIn] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const classes = useStyles();
   let navigate = useNavigate();
+
   //obtener la ruta que ingresaron
   let location = useLocation();
   let from = location.state?.from?.pathname || "/dashboard";
 
-  const avatarStyle = { backgroundColor: "#1bbd7e" };
   const paperStyle = {
     padding: 40,
     margin: "20px auto",
@@ -117,9 +127,9 @@ const Login = () => {
     return <Navigate to={from} />;
   }
 
-  return (
-    <Grid item className={classes.gridMain}>
-      <Paper elevation={10} style={paperStyle}>
+  const Form = () => {
+    return (
+      <>
         <Grid item align="center">
           <h2>icono</h2>
           <h2>Sign In</h2>
@@ -188,8 +198,21 @@ const Login = () => {
         >
           Sign in
         </Button>
-      </Paper>
-    </Grid>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <Grid component={Box} item className={classes.gridDesktop}>
+        <Paper elevation={10} style={paperStyle}>
+          <Form />
+        </Paper>
+      </Grid>
+      <Grid component={Box} item className={classes.gridTabletMobil}>
+        <Form />
+      </Grid>
+    </>
   );
 };
 

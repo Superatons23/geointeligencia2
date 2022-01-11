@@ -18,11 +18,11 @@ import AuthAction from "./pages/AuthAction";
 import Success from "./components/Success";
 import Error from "./components/Error";
 const useStyles = makeStyles((theme) => ({
-  login: {
+  root: {
     marginTop: "75px",
-  },
-  passwordRecovery: {
-    marginTop: "75px",
+    [theme.breakpoints.down(770)]: {
+      marginTop: "0px",
+    },
   },
 }));
 function App() {
@@ -43,7 +43,7 @@ function App() {
                   container
                   justifyContent="center"
                   alignContent="center"
-                  className={classes.login}
+                  className={classes.root}
                 >
                   <Login />
                 </Grid>
@@ -57,26 +57,38 @@ function App() {
                   container
                   justifyContent="center"
                   alignContent="center"
-                  className={classes.passwordRecovery}
+                  className={classes.root}
                 >
                   <PasswordRecovery />
                 </Grid>
               }
             />
             <Route
-              path="/auth/action/"
+              path="/auth/action/*"
               element={
                 <Grid
                   container
                   justifyContent="center"
                   alignContent="center"
-                  className={classes.passwordRecovery}
+                  className={classes.root}
                 >
                   <AuthAction />
                 </Grid>
               }
             />
-
+            <Route
+              path="/test"
+              element={
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignContent="center"
+                  className={classes.root}
+                >
+                  <ResetPassword />
+                </Grid>
+              }
+            />
             <Route
               path="/dashboard"
               element={

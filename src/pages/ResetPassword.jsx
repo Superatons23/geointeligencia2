@@ -50,8 +50,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#1bbd7e",
     marginBottom: "40px",
   },
-  gridMain: {
+  gridDesktop: {
     maxWidth: "450px",
+    [theme.breakpoints.down(770)]: {
+      display: "none",
+    },
+  },
+  gridTabletMobil: {
+    margin: "20px 35px 20px 35px",
+    maxWidth: "450px",
+    [theme.breakpoints.up(770)]: {
+      display: "none",
+    },
   },
 }));
 const initialValues = {
@@ -144,66 +154,80 @@ const ResetPassword = ({ auth, actionCode, continueUrl }) => {
 
     return <Success />;
   };
+
+  const Form = () => {
+    return (
+      <>
+        <Grid item align="center">
+          {/** <Avatar className={classes.avatarStyle}>
+          <h1>icono</h1>
+        </Avatar>*/}
+          <h2>icono</h2>
+          <h1>Create a new password</h1>
+          <p>
+            Choose a password that is unique to this account and that is at
+            least 8 characters long.
+          </p>
+        </Grid>
+
+        <TextField
+          variant="outlined"
+          label="password"
+          placeholder=""
+          fullWidth
+          type="password"
+          onChange={handleInputChange}
+          name="password"
+          value={values.password}
+          {...(errors.password && {
+            error: true,
+            helperText: errors.password,
+          })}
+          className={classes.textFieldUser}
+        />
+
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnSignIn}
+          fullWidth
+          onClick={handleSubmit}
+          classes={{
+            contained: classes.containedBtnSubmit,
+            label: classes.labelBtn,
+          }}
+        >
+          Save
+        </Button>
+
+        <Grid item align="center">
+          <Typography className={classes.typography}>
+            <a
+              className={classes.a}
+              onClick={() => navigate("/signin", { replace: true })}
+            >
+              Return to sign in
+            </a>
+          </Typography>
+        </Grid>
+      </>
+    );
+  };
+
   return (
     <>
       {!isResetPassword ? (
-        <Grid item className={classes.gridMain}>
-          <Paper elevation={10} style={paperStyle}>
-            <Grid item align="center">
-              {/** <Avatar className={classes.avatarStyle}>
-          <h1>icono</h1>
-        </Avatar>*/}
-              <h2>icono</h2>
-              <h1>Create a new password</h1>
-              <p>
-                Choose a password that is unique to this account and that is at
-                least 8 characters long.
-              </p>
-            </Grid>
-
-            <TextField
-              variant="outlined"
-              label="password"
-              placeholder=""
-              fullWidth
-              type="password"
-              onChange={handleInputChange}
-              name="password"
-              value={values.password}
-              {...(errors.password && {
-                error: true,
-                helperText: errors.password,
-              })}
-              className={classes.textFieldUser}
-            />
-
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              className={classes.btnSignIn}
-              fullWidth
-              onClick={handleSubmit}
-              classes={{
-                contained: classes.containedBtnSubmit,
-                label: classes.labelBtn,
-              }}
-            >
-              Save
-            </Button>
-
-            <Grid item align="center">
-              <Typography className={classes.typography}>
-                <a
-                  className={classes.a}
-                  onClick={() => navigate("/signin", { replace: true })}
-                >
-                  Return to sign in
-                </a>
-              </Typography>
-            </Grid>
-          </Paper>
-        </Grid>
+        <>
+          <Grid item className={classes.gridDesktop}>
+            <Paper elevation={10} style={paperStyle}>
+              <Form />
+            </Paper>
+          </Grid>
+          <Grid item className={classes.gridTabletMobil}>
+            <Form />
+          </Grid>
+        </>
       ) : (
         <ShowMessage />
       )}
